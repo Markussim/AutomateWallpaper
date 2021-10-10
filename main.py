@@ -32,4 +32,3 @@ open('wallpaper.jpg', 'wb').write(image.content)
 
 print(redditData.headers["x-ratelimit-remaining"])
 os.system(f"/usr/bin/gsettings set org.gnome.desktop.background picture-uri {str(pathlib.Path().resolve())}/wallpaper.jpg")
-
