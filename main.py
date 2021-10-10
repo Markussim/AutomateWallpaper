@@ -1,8 +1,9 @@
+#!/usr/bin/env python3
 import os
 import requests
 import pathlib
 
-text_file = open("./subreddits.txt", "r")
+text_file = open(f"{str(pathlib.Path().resolve())}/subreddits.txt", "r")
 rawSubreddits = text_file.read()
 text_file.close()
 

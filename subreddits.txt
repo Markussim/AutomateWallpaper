@@ -1,13 +1,1 @@
-EarthPorn
-CityPorn
-SkyPorn
-WeatherPorn
-BotanicalPorn
-LakePorn
-VillagePorn
-BeachPorn
-WaterPorn
-SpacePorn
-multiwall
-wallpapers
-wallpaper
+all
