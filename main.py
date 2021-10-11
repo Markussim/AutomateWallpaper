@@ -22,7 +22,7 @@ for i in range(len(subreddits)):
         combinedSubs += "+"
 
 
-redditData = requests.get(f'https://www.reddit.com/r/{combinedSubs}/top.json?t=day', headers = {'User-agent': 'AutomateWallpaper'})
+redditData = requests.get(f'https://www.reddit.com/r/{combinedSubs}/top.json?t=hour', headers = {'User-agent': 'AutomateWallpaper'})
 
 redditJSON = redditData.json()["data"]["children"]
 index = 0
