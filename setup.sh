@@ -1,5 +1,6 @@
 #/bin/sh
 touch title.txt
+echo "{\"timeframe\": \"day\"}" > config.json
 echo "Sudo is required to install libaries."
 sudo apt install python3-pip -y
 sudo -H pip3 install -r requirements.txt

@@ -3,11 +3,13 @@ import os
 import requests
 import pathlib
 import sys
-import re
+import json
 from PIL import Image
 
 if len(sys.argv) > 1:
     os.chdir(sys.argv[1])
+
+config = json.load(open('config.json',))
 
 text_file = open(f"{str(pathlib.Path().resolve())}/subreddits.txt", "r")
 rawSubreddits = text_file.read()
@@ -22,7 +24,7 @@ for i in range(len(subreddits)):
         combinedSubs += "+"
 
 
-redditData = requests.get(f'https://www.reddit.com/r/{combinedSubs}/top.json?t=hour', headers = {'User-agent': 'AutomateWallpaper'})
+redditData = requests.get(f'https://www.reddit.com/r/{combinedSubs}/top.json?t={config["timeframe"]}', headers = {'User-agent': 'AutomateWallpaper'})
 
 redditJSON = redditData.json()["data"]["children"]
 index = 0
@@ -30,7 +32,6 @@ index = 0
 while True:
     imageURL = redditJSON[index]["data"]["url"]
     txt = redditJSON[index]["data"]["title"]
-    print(txt)
 
     lastTitleFile = open(f"{str(pathlib.Path().resolve())}/title.txt", "r")
     lastTitle = lastTitleFile.read()
