@@ -31,14 +31,23 @@ while True:
     imageURL = redditJSON[index]["data"]["url"]
     txt = redditJSON[index]["data"]["title"]
     print(txt)
-    if imageURL[-4:] == ".jpg":
-        image = requests.get(imageURL, allow_redirects=True)
-        open('tmp.jpg', 'wb').write(image.content)
-        img = Image.open("tmp.jpg")
-        if img.width >= 1920 and img.height >= 1080:
-            os.rename("tmp.jpg", "wallpaper.jpg")
-            break
-    index = index + 1
+
+    lastTitleFile = open(f"{str(pathlib.Path().resolve())}/title.txt", "r")
+    lastTitle = lastTitleFile.read()
+    lastTitleFile.close()
+
+    if lastTitle != txt:
+        if imageURL[-4:] == ".jpg":
+            image = requests.get(imageURL, allow_redirects=True)
+            open('tmp.jpg', 'wb').write(image.content)
+            img = Image.open("tmp.jpg")
+            if img.width >= 1920 and img.height >= 1080:
+                os.rename("tmp.jpg", "wallpaper.jpg")
+                open('title.txt', 'w').write(txt)
+                break
+        index = index + 1
+    else:
+        break
 
 
 # open('wallpaper.jpg', 'wb').write(image.content)
