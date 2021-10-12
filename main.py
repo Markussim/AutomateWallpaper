@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import requests
+import platform
 import pathlib
 import sys
 import json
@@ -42,7 +43,9 @@ while True:
             image = requests.get(imageURL, allow_redirects=True)
             open('tmp.jpg', 'wb').write(image.content)
             img = Image.open("tmp.jpg")
+            img.close()
             if img.width >= 1920 and img.height >= 1080:
+                os.remove("wallpaper.jpg")
                 os.rename("tmp.jpg", "wallpaper.jpg")
                 open('title.txt', 'w').write(txt)
                 break
@@ -54,4 +57,8 @@ while True:
 # open('wallpaper.jpg', 'wb').write(image.content)
 
 print(redditData.headers["x-ratelimit-remaining"])
-os.system(f"/usr/bin/gsettings set org.gnome.desktop.background picture-uri {str(pathlib.Path().resolve())}/wallpaper.jpg")
+if platform.system() == "Windows":
+    import ctypes
+    ctypes.windll.user32.SystemParametersInfoW(20, 0, f"{str(pathlib.Path().resolve())}\\wallpaper.jpg" , 0)
+else:
+    os.system(f"/usr/bin/gsettings set org.gnome.desktop.background picture-uri {str(pathlib.Path().resolve())}/wallpaper.jpg")
