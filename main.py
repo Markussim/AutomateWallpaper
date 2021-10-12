@@ -53,14 +53,21 @@ while True:
         img = Image.open("tmp.jpg")
         img.close()
         if img.width >= 1920 and img.height >= 1080:
-            os.remove("wallpaper.jpg")
-            os.rename("tmp.jpg", "wallpaper.jpg")
+            lastLinkFile = open(f"{str(pathlib.Path().resolve())}/lastLink.txt", "r")
+            previousFile = lastLinkFile.read()
+            previousImagesFile.close()
+
+            if previousFile != redditJSON[index]["data"]["url"]:
+                os.remove("wallpaper.jpg")
+                os.rename("tmp.jpg", "wallpaper.jpg")
+
+            open(f"{str(pathlib.Path().resolve())}/lastLink.txt", "w").write(redditJSON[index]["data"]["url"])
             open('title.txt', 'a').write(imageURL + "\n")
             break
     index += 1
 
 #Keep track of max 30 images to reserve memory
-for i in range(len(previousImages) - 30):
+for i in range(len(previousImages) - 0):
     with open('title.txt', 'r') as fin:
         data = fin.read().splitlines(True)
     with open('title.txt', 'w') as fout:
@@ -72,3 +79,4 @@ if platform.system() == "Windows":
     ctypes.windll.user32.SystemParametersInfoW(20, 0, f"{str(pathlib.Path().resolve())}\\wallpaper.jpg" , 0)
 else:
     os.system(f"/usr/bin/gsettings set org.gnome.desktop.background picture-uri {str(pathlib.Path().resolve())}/wallpaper.jpg")
+    
