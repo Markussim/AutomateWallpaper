@@ -60,7 +60,7 @@ while True:
     index += 1
 
 #Keep track of max 30 images to reserve memory
-if len(previousImages) > 30:
+for i in range(len(previousImages) - 30):
     with open('title.txt', 'r') as fin:
         data = fin.read().splitlines(True)
     with open('title.txt', 'w') as fout:
