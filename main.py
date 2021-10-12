@@ -66,8 +66,8 @@ while True:
             break
     index += 1
 
-#Keep track of max 30 images to reserve memory
-for i in range(len(previousImages) - 0):
+#Keep track of max number of images to reserve memory
+for i in range(len(previousImages) - config["remeberedImages"]):
     with open('title.txt', 'r') as fin:
         data = fin.read().splitlines(True)
     with open('title.txt', 'w') as fout:
