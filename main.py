@@ -25,36 +25,46 @@ for i in range(len(subreddits)):
         combinedSubs += "+"
 
 
-redditData = requests.get(f'https://www.reddit.com/r/{combinedSubs}/top.json?t={config["timeframe"]}', headers = {'User-agent': 'AutomateWallpaper'})
+redditData = requests.get(f'https://www.reddit.com/r/{combinedSubs}/top.json?t={config["timeframe"]}&limit=100', headers = {'User-agent': 'AutomateWallpaper'})
 
 redditJSON = redditData.json()["data"]["children"]
 index = 0
 
+previousImagesFile = open(f"{str(pathlib.Path().resolve())}/title.txt", "r")
+previousImages = previousImagesFile.read()
+previousImagesFile.close()
+previousImages = previousImages.split("\n")
+
 while True:
     imageURL = redditJSON[index]["data"]["url"]
-    txt = redditJSON[index]["data"]["title"]
+    
+    imageUsed = False
+    for previousImage in previousImages:
+        if previousImage == imageURL:
+            imageUsed = True
 
-    lastTitleFile = open(f"{str(pathlib.Path().resolve())}/title.txt", "r")
-    lastTitle = lastTitleFile.read()
-    lastTitleFile.close()
+    if imageUsed: 
+        index += 1
+        continue
 
-    if lastTitle != txt:
-        if imageURL[-4:] == ".jpg":
-            image = requests.get(imageURL, allow_redirects=True)
-            open('tmp.jpg', 'wb').write(image.content)
-            img = Image.open("tmp.jpg")
-            img.close()
-            if img.width >= 1920 and img.height >= 1080:
-                os.remove("wallpaper.jpg")
-                os.rename("tmp.jpg", "wallpaper.jpg")
-                open('title.txt', 'w').write(txt)
-                break
-        index = index + 1
-    else:
-        break
+    if imageURL[-4:] == ".jpg":
+        image = requests.get(imageURL, allow_redirects=True)
+        open('tmp.jpg', 'wb').write(image.content)
+        img = Image.open("tmp.jpg")
+        img.close()
+        if img.width >= 1920 and img.height >= 1080:
+            os.remove("wallpaper.jpg")
+            os.rename("tmp.jpg", "wallpaper.jpg")
+            open('title.txt', 'a').write(imageURL + "\n")
+            break
+    index += 1
 
-
-# open('wallpaper.jpg', 'wb').write(image.content)
+#Keep track of max 30 images to reserve memory
+if len(previousImages) > 30:
+    with open('title.txt', 'r') as fin:
+        data = fin.read().splitlines(True)
+    with open('title.txt', 'w') as fout:
+        fout.writelines(data[1:])
 
 print(redditData.headers["x-ratelimit-remaining"])
 if platform.system() == "Windows":
