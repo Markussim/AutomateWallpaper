@@ -1,5 +1,6 @@
 #/bin/sh
 touch title.txt
+touch lastLink.txt
 echo "{\"timeframe\": \"day\", \"remeberedImages\": 0}" > config.json
 echo "Sudo is required to install libaries."
 sudo apt install python3-pip -y
