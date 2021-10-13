@@ -1,5 +1,7 @@
 # AutomateWallpaper
-Automatically changes wallpaper on Gnome DE
+Automatically changes wallpaper.
+
+Fork from ![Markussim/AutomateWallpaper](https://github.com/Markussim/AutomateWallpaper) that will add Windows and hopefully macOS support.
 
 ## ⚡️ Setup
 
