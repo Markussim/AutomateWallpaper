@@ -6,6 +6,7 @@ import pathlib
 import sys
 import json
 from PIL import Image
+from os.path import exists
 
 if len(sys.argv) > 1:
     os.chdir(sys.argv[1])
@@ -56,6 +57,9 @@ while True:
             lastLinkFile = open(f"{str(pathlib.Path().resolve())}/lastLink.txt", "r")
             previousFile = lastLinkFile.read()
             previousImagesFile.close()
+
+            if not exists("wallpaper.jpg"):
+                open('wallpaper.jpg', 'w').write("Test")
 
             if previousFile != redditJSON[index]["data"]["url"]:
                 os.remove("wallpaper.jpg")
